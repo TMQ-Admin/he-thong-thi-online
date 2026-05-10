@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách bài tập - Hệ thống thi Code</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; }
+        .navbar { background: #2c3e50; padding: 1rem 5%; display: flex; justify-content: center; gap: 20px; }
+        .navbar a { color: #bdc3c7; text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 14px; }
+        .navbar a:hover { color: white; }
+
+        .container { width: 90%; max-width: 1200px; margin: 30px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        
+        /* Bộ lọc tìm kiếm */
+        .filter-bar { display: flex; gap: 15px; margin-bottom: 25px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+        .filter-bar input, .filter-bar select { padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+
+        /* Bảng danh sách bài */
+        .problem-table { width: 100%; border-collapse: collapse; }
+        .problem-table th { text-align: left; padding: 15px; border-bottom: 2px solid #3498db; color: #2c3e50; }
+        .problem-table td { padding: 15px; border-bottom: 1px solid #eee; }
+        .problem-table tr:hover { background-color: #fcfcfc; }
+
+        .tag { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .tag-easy { background: #d4edda; color: #155724; }
+        .tag-medium { background: #fff3cd; color: #856404; }
+        .tag-hard { background: #f8d7da; color: #721c24; }
+
+        .btn-solve { background: #3498db; color: white; padding: 7px 15px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 14px; }
+        .btn-add { background: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html">Trang chủ</a>
+        <a href="problems.html" style="color:white">Danh sách bài</a>
+        <a href="kythi.html">Kỳ thi</a>
+        <a href="members.html">Thành viên</a>
+    </nav>
+
+    <div class="container">
+        <h2>THƯ VIỆN BÀI TẬP</h2>
+        <p style="color: #666; margin-bottom: 20px;">Nơi tổng hợp các bài toán từ cơ bản đến nâng cao cho mọi ngôn ngữ (C++, Python...)</p>
+
+        <div class="teacher-only" style="border: 1px dashed #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <p><strong>Dành cho Giáo viên:</strong> Thầy/Cô có bài toán mới muốn đóng góp?</p>
+            <button class="btn-add" onclick="alert('Mở form thêm bài tập: Tên bài, Đề bài, Testcase...')">+ ĐÓNG GÓP BÀI MỚI</button>
+        </div>
+
+        <div class="filter-bar">
+            <input type="text" placeholder="Tìm tên bài..." style="flex: 2;">
+            <select style="flex: 1;">
+                <option>Mọi độ khó</option>
+                <option>Dễ</option>
+                <option>Trung bình</option>
+                <option>Khó</option>
+            </select>
+            <button class="btn-solve">Tìm kiếm</button>
+        </div>
+
+        <table class="problem-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên bài tập</th>
+                    <th>Độ khó</th>
+                    <th>Ngôn ngữ hỗ trợ</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#101</td>
+                    <td><strong>Sửa lỗi cú pháp C++ cơ bản</strong></td>
+                    <td><span class="tag tag-easy">Dễ</span></td>
+                    <td>C++, Python, Java</td>
+                    <td><a href="#" class="btn-solve">Làm bài</a></td>
+                </tr>
+                <tr>
+                    <td>#102</td>
+                    <td><strong>Tìm số nguyên tố trong mảng</strong></td>
+                    <td><span class="tag tag-medium">Trung bình</span></td>
+                    <td>C++, Python</td>
+                    <td><a href="#" class="btn-solve">Làm bài</a></td>
+                </tr>
+                <tr>
+                    <td>#103</td>
+                    <td><strong>Bài toán quân Hậu (N-Queens)</strong></td>
+                    <td><span class="tag tag-hard">Khó</span></td>
+                    <td>C++, Python, Pascal</td>
+                    <td><a href="#" class="btn-solve">Làm bài</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
