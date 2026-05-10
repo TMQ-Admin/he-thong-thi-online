@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Các kỳ thi - Hệ thống thi Code</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; color: #333; }
+        .navbar { background: #2c3e50; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .navbar a { color: white; text-decoration: none; font-weight: bold; }
+        
+        .container { width: 90%; max-width: 1100px; margin: 30px auto; }
+        
+        /* Phần dành cho Giáo viên */
+        .teacher-panel { background: #fff; padding: 20px; border-radius: 8px; border-left: 5px solid #e74c3c; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .btn-create { background: #e74c3c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        /* Danh sách kỳ thi cho Học sinh */
+        .contest-list { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .contest-card { background: white; padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .contest-info h3 { color: #2c3e50; margin-bottom: 5px; }
+        .status-on { color: #2ecc71; font-weight: bold; }
+        .btn-join { background: #3498db; color: white; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; }
+
+        /* Form tạo kỳ thi (Ẩn hiện khi nhấn nút) */
+        .modal { background: #f9f9f9; padding: 20px; margin-top: 20px; border: 1px dashed #ccc; display: none; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html">CODE-TEST</a>
+        <div style="color: white;">Vai trò: <strong>Giáo viên</strong></div>
+    </nav>
+
+    <div class="container">
+        <div class="teacher-panel">
+            <h2>Quản trị kỳ thi</h2>
+            <p>Chào thầy/cô, đây là nơi tạo đề và quản lý bộ test chấm điểm.</p>
+            <button class="btn-create" onclick="toggleForm()">+ TẠO KỲ THI MỚI</button>
+
+            <div id="createForm" class="modal">
+                <h3>Thiết lập kỳ thi mới</h3>
+                <input type="text" placeholder="Tên kỳ thi (Ví dụ: Thi cuối kỳ Tin học 8)">
+                <select id="lockType">
+                    <option value="none">Không có mật khẩu</option>
+                    <option value="password">Yêu cầu mật khẩu</option>
+                </select>
+                <input type="password" id="passInput" placeholder="Nhập mật khẩu kỳ thi" style="display:none">
+                
+                <hr>
+                <h4>Thêm bài tập & Test case</h4>
+                <textarea placeholder="Mô tả đề bài..."></textarea>
+                <p>Tải lên file Test (.zip hoặc .txt): <input type="file"></p>
+                
+                <button class="btn-create" style="background:#2ecc71">Lưu & Xuất bản kỳ thi</button>
+            </div>
+        </div>
+
+        <h2>Các kỳ thi đang diễn ra</h2>
+        <div class="contest-list">
+            <div class="contest-card">
+                <div class="contest-info">
+                    <h3>Khảo sát năng lực lập trình C++</h3>
+                    <p>Người tạo: Thầy Quân | Thời gian: 90 phút</p>
+                    <span class="status-on">● Đang diễn ra</span>
+                </div>
+                <button class="btn-join" onclick="joinContest('none')">VÀO THI</button>
+            </div>
+
+            <div class="contest-card">
+                <div class="contest-info">
+                    <h3>Kiểm tra 15 phút (Bài 2)</h3>
+                    <p>Người tạo: Cô Mai | Yêu cầu mật khẩu: <strong style="color:red">Có</strong></p>
+                    <span class="status-on">● Đang diễn ra</span>
+                </div>
+                <button class="btn-join" style="background:#f39c12" onclick="joinContest('pass')">NHẬP MẬT MÃ</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            var x = document.getElementById("createForm");
+            x.style.display = (x.style.display === "none" || x.style.display === "") ? "block" : "none";
+        }
+
+        document.getElementById("lockType").onchange = function() {
+            document.getElementById("passInput").style.display = (this.value === "password") ? "block" : "none";
+        };
+
+        function joinContest(type) {
+            if(type === 'pass') {
+                let p = prompt("Vui lòng nhập mật khẩu của giáo viên cung cấp:");
+                if(p) alert("Đang kiểm tra mật mã và vào phòng thi...");
+            } else {
+                alert("Đang chuyển hướng vào danh sách bài thi...");
+            }
+        }
+    </script>
+</body>
+</html>
