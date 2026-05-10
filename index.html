@@ -2,31 +2,90 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Hệ thống thi Code</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống thi Code - Trang chủ</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background-color: #f0f2f5; margin: 0; padding: 0; }
-        .header { background-color: #007bff; color: white; padding: 20px 0; shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .container { background: white; width: 80%; max-width: 800px; margin: 30px auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        h1 { margin-top: 0; color: #333; }
-        .status { color: #28a745; font-weight: bold; }
-        .btn-submit { background: #28a745; color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; transition: 0.3s; }
-        .btn-submit:hover { background: #218838; }
-        .exam-info { border-left: 5px solid #007bff; background: #e7f3ff; padding: 15px; text-align: left; margin: 20px 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; color: #333; background-color: #f4f7f6; }
+
+        /* Thanh điều hướng */
+        .navbar { background: #2c3e50; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { color: white; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        .nav-links { list-style: none; display: flex; gap: 20px; }
+        .nav-links a { color: #bdc3c7; text-decoration: none; font-weight: 500; font-size: 14px; text-transform: uppercase; }
+        .nav-links a:hover { color: white; }
+
+        /* Nút đăng nhập/đăng ký trên menu */
+        .auth-group { display: flex; gap: 10px; }
+        .btn { padding: 8px 18px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.3s; }
+        .btn-login { border: 1px solid #3498db; color: #3498db; }
+        .btn-login:hover { background: #3498db; color: white; }
+        .btn-register { background: #3498db; color: white; }
+        .btn-register:hover { background: #2980b9; }
+
+        /* Phần giới thiệu chính (Hero Section) */
+        .hero { background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1350&q=80'); 
+                background-size: cover; color: white; padding: 80px 5%; text-align: center; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+
+        /* Phần hướng dẫn sử dụng */
+        .how-to { padding: 50px 5%; background: white; }
+        .section-title { text-align: center; margin-bottom: 40px; }
+        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .step-card { padding: 25px; border: 1px solid #eee; border-radius: 10px; text-align: center; transition: transform 0.3s; }
+        .step-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .step-number { background: #3498db; color: white; width: 40px; height: 40px; line-height: 40px; border-radius: 50%; display: inline-block; margin-bottom: 15px; font-weight: bold; }
+        
+        .footer { background: #2c3e50; color: white; text-align: center; padding: 20px; margin-top: 50px; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2>Hệ Thống Thi Code</h2>
-    </div>
-    <div class="container">
-        <h1>Chào mừng đến với kỳ thi C++</h1>
-        <div class="exam-info">
-            <strong>Trạng thái:</strong> <span class="status">Đang diễn ra</span><br>
-            <strong>Thời gian còn lại:</strong> 60 phút<br>
-            <strong>Số lượng bài tập:</strong> 5 bài
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">CODE-TEST</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="#">Danh sách bài</a></li>
+            <li><a href="#">Kỳ thi</a></li>
+        </ul>
+        <div class="auth-group">
+            <a href="login.html" class="btn btn-login">ĐĂNG NHẬP</a>
+            <a href="register.html" class="btn btn-register">ĐĂNG KÝ</a>
         </div>
-        <p>Vui lòng chuẩn bị code và nhấn nút bên dưới để nộp bài.</p>
-        <button class="btn-submit" onclick="alert('Hệ thống đang kết nối với bộ chấm code...')">Nộp bài làm</button>
-    </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Nền tảng thi C++ Online chuyên nghiệp</h1>
+        <p>Học tập hiệu quả - Đánh giá năng lực chính xác dành cho Giáo viên & Học sinh</p>
+    </section>
+
+    <section class="how-to">
+        <div class="section-title">
+            <h2>HƯỚNG DẪN SỬ DỤNG</h2>
+            <p>Chỉ với 3 bước đơn giản để bắt đầu bài thi</p>
+        </div>
+        <div class="steps">
+            <div class="step-card">
+                <span class="step-number">1</span>
+                <h3>Tạo tài khoản</h3>
+                <p>Đăng ký thành viên với vai trò là <b>Học sinh</b> hoặc <b>Giáo viên</b> và nhập đúng tên trường của bạn.</p>
+            </div>
+            <div class="step-card">
+                <span class="step-number">2</span>
+                <h3>Chọn bài thi</h3>
+                <p>Truy cập vào mục "Danh sách bài" hoặc "Kỳ thi" để chọn đề bài phù hợp với trình độ của mình.</p>
+            </div>
+            <div class="step-card">
+                <span class="step-number">3</span>
+                <h3>Nộp code & Nhận kết quả</h3>
+                <p>Viết mã nguồn C++, nộp bài và hệ thống sẽ tự động chấm điểm dựa trên các bộ test case.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 Hệ thống thi Code Online. Phát triển bởi Minh Quân.</p>
+    </footer>
+
 </body>
 </html>
