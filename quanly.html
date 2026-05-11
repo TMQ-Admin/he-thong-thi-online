@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý bài tập</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 50px; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2 style="text-align: center; color: #333;">THÊM BÀI TẬP MỚI</h2>
+        <input type="text" id="title" placeholder="Tên bài (Vd: Tính tổng A+B)">
+        <textarea id="desc" rows="4" placeholder="Mô tả đề bài..."></textarea>
+        <textarea id="input" rows="2" placeholder="Input mẫu (Vd: 10 20)"></textarea>
+        <textarea id="output" rows="2" placeholder="Output mẫu (Vd: 30)"></textarea>
+        <button onclick="saveProblem()">ĐĂNG BÀI TẬP</button>
+    </div>
+
+    <script>
+        async function saveProblem() {
+            const data = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('desc').value,
+                testCaseInput: document.getElementById('input').value,
+                testCaseOutput: document.getElementById('output').value
+            };
+            const response = await fetch('https://he-thong-thi-backend.onrender.com/add-problem', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            const res = await response.json();
+            alert(res.message);
+            location.reload(); 
+        }
+    </script>
+</body>
+</html>
