@@ -1,56 +1,75 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const axios = require('axios'); 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-// KẾT NỐI DATABASE 
-// Quân lưu ý: Thay MAT_KHAU_CUA_QUAN bằng mật khẩu thật của bạn nhé
-const mongoURI = 'mongodb+srv://admin:MAT_KHAU_CUA_QUAN@cluster0.wzicaqf.mongodb.net/?appName=Cluster0';
-
-mongoose.connect(mongoURI)
+// Kết nối MongoDB (Quân giữ nguyên biến MONGO_URI đã cài trên Render nhé)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("--- Đã kết nối Database thành công! ---"))
-  .catch(err => console.error("Lỗi kết nối Database:", err));
+  .catch(err => console.log("Lỗi kết nối:", err));
 
-// Định nghĩa cấu trúc dữ liệu Thành viên
-const User = mongoose.model('User', {
-    username: String,
-    email: String,
-    school: String,
-    role: String,
-    pass: String
+// 1. Bảng Người dùng
+const User = mongoose.model('User', { username: String, email: String, school: String, role: String, pass: String });
+
+// 2. Bảng Đề bài
+const Problem = mongoose.model('Problem', {
+    title: String,
+    description: String,
+    testCaseInput: String,
+    testCaseOutput: String
 });
 
-// 1. API ĐĂNG KÝ
-app.post('/register', async (req, res) => {
+// --- CÁC ĐƯỜNG DẪN XỬ LÝ ---
+
+// Giáo viên thêm đề bài
+app.post('/add-problem', async (req, res) => {
     try {
-        const newUser = new User(req.body);
-        await newUser.save();
-        res.status(201).send({ message: "Chúc mừng Quân! Đăng ký thành công rồi." });
-    } catch (error) {
-        res.status(400).send({ message: "Lỗi rồi, không lưu được dữ liệu!" });
-    }
+        const newProblem = new Problem(req.body);
+        await newProblem.save();
+        res.json({ message: "Đã thêm bài tập mới thành công!" });
+    } catch (err) { res.status(500).json({ message: "Lỗi khi thêm bài!" }); }
 });
 
-// 2. API ĐĂNG NHẬP
-app.post('/login', async (req, res) => {
+// Lấy danh sách đề bài
+app.get('/problems', async (req, res) => {
+    const problems = await Problem.find();
+    res.json(problems);
+});
+
+// Lấy chi tiết 1 bài tập
+app.get('/problem/:id', async (req, res) => {
+    const problem = await Problem.findById(req.params.id);
+    res.json(problem);
+});
+
+// CHẤM BÀI TỰ ĐỘNG (Sử dụng Piston API)
+app.post('/submit', async (req, res) => {
+    const { code, language, problemId } = req.body;
     try {
-        const user = await User.findOne({ username: req.body.user, pass: req.body.pass });
-        if (user) {
-            res.send({ message: "Đăng nhập thành công!", role: user.role });
+        const problem = await Problem.findById(problemId);
+        
+        const response = await axios.post('https://emkc.org/api/v2/piston/execute', {
+            language: language, // 'cpp' hoặc 'python'
+            version: '*',
+            files: [{ content: code }],
+            stdin: problem.testCaseInput 
+        });
+
+        const output = response.data.run.output.trim();
+        const expected = problem.testCaseOutput.trim();
+
+        if (output === expected) {
+            res.json({ status: "AC", message: "Chính xác! 10/10 điểm", output });
         } else {
-            res.status(401).send({ message: "Sai tài khoản hoặc mật khẩu!" });
+            res.json({ status: "WA", message: "Sai rồi! Thử lại nhé", output, expected });
         }
-    } catch (error) {
-        res.status(500).send({ message: "Lỗi hệ thống!" });
+    } catch (err) {
+        res.status(500).json({ message: "Lỗi hệ thống khi chấm bài!" });
     }
 });
 
-// Cổng chạy ứng dụng
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server đang chạy tại: http://localhost:${PORT}`);
-    console.log("Sẵn sàng nhận dữ liệu từ website của bạn!");
-});
+app.listen(process.env.PORT || 3000, () => console.log("Server Online!"));
