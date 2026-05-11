@@ -2,33 +2,59 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký thành viên - Lumina Me</title>
     <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f2f5; }
-        .form-box { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 350px; }
-        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { background: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
-        button:hover { background: #0056b3; }
-        h2 { text-align: center; color: #333; }
+        :root { --primary-color: #007bff; --hover-color: #0056b3; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .register-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { text-align: center; color: #333; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group { margin-bottom: 15px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; outline: none; transition: border-color 0.3s; }
+        input:focus { border-color: var(--primary-color); }
+        button { width: 100%; padding: 12px; background-color: var(--primary-color); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+        button:hover { background-color: var(--hover-color); }
+        .footer-text { text-align: center; margin-top: 15px; font-size: 13px; color: #666; }
     </style>
 </head>
 <body>
 
-<div class="form-box">
-    <h2>ĐĂNG KÝ</h2>
-    <input type="text" id="username" placeholder="Tên đăng nhập" required>
-    <input type="email" id="email" placeholder="Email của bạn" required>
-    <input type="text" id="school" placeholder="Trường học (Vd: THCS Nguyễn Trãi)" required>
-    <select id="role">
-        <option value="Học sinh">Học sinh</option>
-        <option value="Giáo viên">Giáo viên</option>
-    </select>
-    <input type="password" id="pass" placeholder="Mật khẩu" required>
-    <button onclick="handleRegister()">Gửi Đăng Ký</button>
+<div class="register-container">
+    <h2>Đăng Ký</h2>
+    
+    <div class="form-group">
+        <input type="text" id="username" placeholder="Tên đăng nhập" required>
+    </div>
+    
+    <div class="form-group">
+        <input type="email" id="email" placeholder="Email (Vd: quan@gmail.com)" required>
+    </div>
+    
+    <div class="form-group">
+        <input type="text" id="school" placeholder="Trường học (Vd: THCS Nguyễn Trãi)" required>
+    </div>
+    
+    <div class="form-group">
+        <select id="role">
+            <option value="Học sinh">Học sinh</option>
+            <option value="Giáo viên">Giáo viên</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <input type="password" id="pass" placeholder="Mật khẩu" required>
+    </div>
+    
+    <button onclick="registerUser()" id="btnRegister">GỬI ĐĂNG KÝ</button>
+    
+    <p class="footer-text">Dự án hỗ trợ học tập <b>Lumina Me</b></p>
 </div>
 
 <script>
-    async function handleRegister() {
+    async function registerUser() {
+        const btn = document.getElementById('btnRegister');
+        
+        // Lấy dữ liệu từ form
         const userData = {
             username: document.getElementById('username').value,
             email: document.getElementById('email').value,
@@ -37,28 +63,40 @@
             pass: document.getElementById('pass').value
         };
 
-        if(!userData.username || !userData.pass) {
+        // Kiểm tra xem Quân đã điền đủ chưa
+        if (!userData.username || !userData.pass) {
             alert("Quân ơi, điền đủ thông tin đã nhé!");
             return;
         }
 
+        btn.innerText = "Đang xử lý...";
+        btn.disabled = true;
+
         try {
-            // Nối thẳng đến link Render của Quân
+            // Gửi dữ liệu đến Render
             const response = await fetch('https://he-thong-thi-backend.onrender.com/register', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(userData)
             });
 
             const result = await response.json();
-            alert(result.message);
-            
-            if(response.ok) {
-                // Đăng ký xong thì chuyển về trang chủ (index.html)
-                window.location.href = 'index.html';
+
+            if (response.ok) {
+                alert("Thành công! Dữ liệu đã được lưu vào MongoDB.");
+                // Xóa trắng form sau khi thành công
+                document.querySelectorAll('input').forEach(i => i.value = '');
+            } else {
+                alert("Lỗi server: " + (result.message || "Không xác định"));
             }
         } catch (error) {
-            alert("Lỗi kết nối rồi! Quân kiểm tra xem Render đã chạy 'Live' chưa nhé.");
+            console.error("Lỗi:", error);
+            alert("Lỗi kết nối! Quân kiểm tra xem Render đã hiện chữ 'Live' màu xanh chưa nhé.");
+        } finally {
+            btn.innerText = "GỬI ĐĂNG KÝ";
+            btn.disabled = false;
         }
     }
 </script>
